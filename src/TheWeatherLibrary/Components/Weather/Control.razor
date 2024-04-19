@@ -1,0 +1,86 @@
+@using System.ComponentModel.DataAnnotations
+@using TheWeatherLibrary.Components.Weather.Services
+@inject WeatherApiClient Client
+
+@code
+{
+    [Parameter]
+    public required string Unit { get; set; }
+
+    [Parameter]
+    public EventCallback<string> TagClickCallback { get; init; }
+
+    [Parameter]
+    public EventCallback<LocationWrap> AddCallback { get; init; }
+
+    private FormModel _model = null!;
+    private EditContext _editContext = null!;
+    private ValidationMessageStore _messageStore = null!;
+
+    private bool _isLocationInValid = false;
+
+    protected override void OnInitialized()
+    {
+        _model = new FormModel();
+        _editContext = new EditContext(_model);
+        _messageStore = new ValidationMessageStore(_editContext);
+    }
+
+    private void OnUnitChange(MouseEventArgs e, string unit)
+    {
+        TagClickCallback.InvokeAsync(unit);
+    }
+
+    private async Task OnSubmit(EditContext context)
+    {
+        _messageStore.Clear();
+
+        if (context.Validate())
+        {
+            try
+            {
+                LocationWrap? locationWrap = await Client.GetLocationByCity(_model.Location!);
+
+                if (locationWrap != null)
+                {
+                    await AddCallback.InvokeAsync(locationWrap);
+                }
+
+                _model.Location = null;
+            }
+            catch (Exception e)
+            {
+                _messageStore.Add(_editContext.Field(nameof(FormModel.Location)), "Can not get weather of this location");
+            }
+        }
+    }
+
+    class FormModel
+    {
+        [Required]
+        public string? Location { get; set; }
+    }
+
+}
+
+<Card>
+    <div>
+        <EditForm EditContext="_editContext" OnSubmit="OnSubmit" FormName="control">
+            <DataAnnotationsValidator />
+
+            <InputText class="input" @bind-Value="_model.Location" />
+            <ValidationMessage class="has-text-danger" For="@(() => _model.Location)" />
+        </EditForm>
+
+        <div class="control">
+            <label class="radio">
+                <input type="radio" name="unit" value="C" checked=@(Unit == "C") @onclick="@(args => OnUnitChange(args, "C"))" />
+                &nbsp;Celsius
+            </label>
+            <label class="radio">
+                <input type="radio" name="unit" value="F" checked=@(Unit == "F") @onclick="@(args => OnUnitChange(args, "F"))" />
+                &nbsp;Fahrenheit
+            </label>
+        </div>
+    </div>
+</Card>

@@ -1,0 +1,50 @@
+@using TheWeatherLibrary.Components.Weather.Services
+@inject WeatherApiClient Client
+
+@code
+{
+    private List<LocationWrap> _locationWraps = [];
+
+    private string Unit { get; set; } = "C";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _locationWraps = await Client!.GetLocationByCities(new[] { "Da Nang" });
+    }
+
+    private void OnTagClick(string unit)
+    {
+        Unit = unit;
+    }
+
+    private async Task OnAdd(LocationWrap locationWrap)
+    {
+        _locationWraps.Add(locationWrap);
+    }
+
+    private void OnRemove(string location)
+    {
+        _locationWraps.RemoveAll(x => x.Location!.Name.Equals(location));
+    }
+}
+
+<div class="overview">
+    <h3 style="color:red">Line with style</h3>
+    <Control Unit="@Unit" TagClickCallback="@OnTagClick" AddCallback="@OnAdd" />
+
+    <br />
+
+    @if (_locationWraps.Any())
+    {
+        foreach (var locationWrap in _locationWraps)
+        {
+            <div>
+                <WeatherItem @key="locationWrap.Location?.Name" Closable="true" RemoveCallback="@OnRemove" Editable="false" Unit="@Unit" LocationWrap="@locationWrap"></WeatherItem>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
+</div>
