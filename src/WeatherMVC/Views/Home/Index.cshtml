@@ -1,0 +1,7 @@
+﻿@using TheWeatherLibrary.Components.Weather
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@(await Html.RenderComponentAsync<Weather>(RenderMode.ServerPrerendered))
+    

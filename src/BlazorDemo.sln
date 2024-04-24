@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherServerRender", "Weat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMAUI", "WeatherMAUI\WeatherMAUI.csproj", "{908735B1-577C-42E1-A998-1C3D7C93552A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMVC", "WeatherMVC\WeatherMVC.csproj", "{731B9C75-34D8-4A95-A65D-D2F094D5A27C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{908735B1-577C-42E1-A998-1C3D7C93552A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{908735B1-577C-42E1-A998-1C3D7C93552A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{908735B1-577C-42E1-A998-1C3D7C93552A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731B9C75-34D8-4A95-A65D-D2F094D5A27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731B9C75-34D8-4A95-A65D-D2F094D5A27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731B9C75-34D8-4A95-A65D-D2F094D5A27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731B9C75-34D8-4A95-A65D-D2F094D5A27C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
